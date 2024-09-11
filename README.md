@@ -64,12 +64,14 @@ This project is built with:
 - Fully responsive design for mobile and desktop use
 - PWA support for installation on devices
 
-created a bad video for testing purposes ONLY :smirk:
 
+created a bad video for testing purposes ONLY :smirk:
 
 
 https://github.com/user-attachments/assets/30a9d632-53fa-4764-8983-7ce7e2e1cb82
 
+
+Not faster, better then obs or OpenShot. Was hoping to create something fast with a recorder video or a few screenshots. 
 
 
 [(Back to top)](#table-of-contents)
