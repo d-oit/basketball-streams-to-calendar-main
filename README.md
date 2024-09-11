@@ -2,6 +2,8 @@
 
 Basketball live streams prompt  google calendar events creator
 
+![logo](https://github.com/user-attachments/assets/43a7f5b8-9c29-4346-8712-ab1aeceedc6a)
+
 Initial created with **GPTengieer**
 
 **Use GPT Engineer**
@@ -61,6 +63,10 @@ This project is built with:
 - PWA support for installation on devices
 
 created a bad video for testing purposes ONLY :smirk:
+
+
+
+https://github.com/user-attachments/assets/30a9d632-53fa-4764-8983-7ce7e2e1cb82
 
 
 
