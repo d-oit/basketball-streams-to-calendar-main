@@ -82,4 +82,6 @@ Use the discussions for questions first before creating an issue.
 
 # License
 
+[MIT](https://github.com/d-oit/basketball-streams-to-calendar-ai-prompt/blob/main/LICENSE)
+
 [(Back to top)](#table-of-contents)
