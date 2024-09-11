@@ -1,67 +1,77 @@
-# Welcome to your GPT Engineer project
+# d.o.it Prompt2Cal
 
-## Project info
+Basketball live streams prompt  google calendar events creator
 
-**Project**: stream-scribe-calendar
-
-**URL**: https://run.gptengineer.app/projects/73ba8942-60d2-4233-8a1f-df08624465f6/improve
-
-## How can I edit this code?
-
-There are several ways of editing your application.
+** Initial created with **GPTengieer**
 
 **Use GPT Engineer**
 
 Simply visit the GPT Engineer project at [GPT Engineer](https://gptengineer.app/projects/73ba8942-60d2-4233-8a1f-df08624465f6/improve) and start prompting.
 
-Changes made via gptengineer.app will be committed automatically to this repo.
+# Quickstart/Demo
 
-**Use your preferred IDE**
+- Configure the the application
+- Paste the live streams into the text field
+- Start the analyzer
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in the GPT Engineer UI.
+## Configuration
+- Get your google gemini api key (aistudio) and google calendar  in the console.cloud.google.com (search for google calendar api quickstart javascript)
+- Set up your API keys and Calendar ID in the **Configuration** section. The configuration save and load the configuration from the Browser localStorage.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Table of Contents
 
-Follow these steps:
+- [d.o.it Prompt2Cal](#doit-prompt2cal)
+- [Quickstart/Demo](#quickstartdemo)
+   * [Configuration](#configuration)
+- [Table of Contents](#table-of-contents)
+   * [Project info](#project-info)
+   * [What technologies are used for this project?](#what-technologies-are-used-for-this-project)
+- [Functions](#functions)
+- [Discussions / Issue](#discussions-issue)
+- [License](#license)
 
-```sh
-git clone https://github.com/GPT-Engineer-App/stream-scribe-calendar.git
-cd stream-scribe-calendar
-npm i
+## Project info
 
-# This will run a dev server with auto reloading and an instant preview.
-npm run dev
-```
+**Project**: d.o.it Prompt2Cal
 
-**Edit a file directly in GitHub**
+** Initial created with **GPTengieer**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Use GPT Engineer**
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Simply visit the GPT Engineer project at [GPT Engineer](https://gptengineer.app/projects/73ba8942-60d2-4233-8a1f-df08624465f6/improve) and start prompting.
 
 ## What technologies are used for this project?
 
-This project is built with .
+This project is built with:
 
 - Vite
 - React
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
+# Functions
 
-All GPT Engineer projects can be deployed directly via the GPT Engineer app.
+- Analyze basketball live stream text using AI
+- Extract event details including title, date, time, and location
+- Create Google Calendar events automatically
+- Customize AI prompt for analysis
+- Save custom prompts and analysis results
+- Toggle between light, dark, and system themes
+- Fully responsive design for mobile and desktop use
+- PWA support for installation on devices
 
-Simply visit your project at [GPT Engineer](https://gptengineer.app/projects/73ba8942-60d2-4233-8a1f-df08624465f6/improve) and click on Share -> Publish.
+created a bad video for testing purposes ONLY :smirk:
 
-## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify or GitHub pages. Visit our docs for more details: [Custom domains](https://docs.gptengineer.app/tips-tricks/custom-domain/)
+
+[(Back to top)](#table-of-contents)
+
+# Discussions / Issue
+
+Use the discussions for questions first before creating an issue.
+
+[(Back to top)](#table-of-contents)
+
+# License
+
+[(Back to top)](#table-of-contents)

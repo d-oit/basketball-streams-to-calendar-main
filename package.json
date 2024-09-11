@@ -1,7 +1,7 @@
 {
-  "name": "vite-project",
+  "name": "d.o.it Prompt2Cal",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -83,5 +83,8 @@
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vite": "^5.1.4"
+  },
+    "resolutions": {
+    "glob": "^9.0.0"
   }
 }

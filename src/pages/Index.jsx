@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import CreatorPage from './CreatorPage';
-import ConfigurationPage from './ConfigurationPage';
+// Lazy load the ConfigurationPage component
+const ConfigurationPage = lazy(() => import('./ConfigurationPage'));
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Laptop } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -92,7 +93,9 @@ const Index = () => {
             <AccordionItem value="configuration">
               <AccordionTrigger>Configuration</AccordionTrigger>
               <AccordionContent>
-                <ConfigurationPage />
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ConfigurationPage />
+                </Suspense>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
