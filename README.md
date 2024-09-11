@@ -6,7 +6,7 @@ Basketball live streams prompt  google calendar events creator
 ![logo](https://github.com/user-attachments/assets/36223ad0-bc5e-4268-ad61-8b1dc3e38952)
 
 
-Initial created with **GPTengieer**
+Initial created with GPT Engineer
 
 **Use GPT Engineer**
 
