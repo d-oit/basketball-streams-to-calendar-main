@@ -2,7 +2,7 @@
 
 Basketball live streams prompt  google calendar events creator
 
-** Initial created with **GPTengieer**
+Initial created with **GPTengieer**
 
 **Use GPT Engineer**
 
