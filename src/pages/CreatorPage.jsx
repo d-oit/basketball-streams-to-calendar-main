@@ -230,6 +230,11 @@ const CreatorPage = () => {
         </Button>
         <HelpDialog />
       </div>
+      <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded">
+          <h3 className="font-bold mb-2">Info:</h3>
+          <pre className="whitespace-pre-wrap text-xs">Existing calendar entires with the same title on the same data are deleted before created the new entry.
+          </pre>         
+      </div>
       <div className={`mt-4 p-4 rounded ${messages.length > 0 ? (createdEventsCount > 0 ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900') : ''}`}>
         {messages.map((message, index) => (
           <p key={index} className="text-sm text-gray-600 dark:text-gray-300">{message}</p>
