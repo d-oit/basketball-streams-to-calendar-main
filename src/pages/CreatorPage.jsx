@@ -202,15 +202,13 @@ const CreatorPage = () => {
         <Button onClick={handlePromptData} variant="outline" size="sm">
           Prompt
         </Button>
-        {googleCalendarId && (
-          <Button
+             <Button
             onClick={() => window.open(`https://calendar.google.com/calendar/embed?src=${googleCalendarId}`, '_blank')}
             variant="outline"
             size="sm"
           >
             Google Calendar <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+          </Button
       </div>
       {useCustomPrompt && (
         <Textarea
