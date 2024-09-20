@@ -1,4 +1,4 @@
-# d.o.it Prompt2Cal
+# d.o.it Prompt2GCal
 
 Basketball live streams prompt  google calendar events creator
 
