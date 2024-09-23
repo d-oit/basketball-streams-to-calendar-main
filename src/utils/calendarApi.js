@@ -200,8 +200,7 @@ export const createCalendarEvent = async (events) => {
   }
 
   try {
-    await initClient();
-    return await createEvents(events);
+    return await initClient().then(() => createEvents(events));
   } catch (error) {
     console.error("Error in createCalendarEvent:", error);
     if (error.result && error.result.error) {

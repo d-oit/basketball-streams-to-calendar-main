@@ -75,28 +75,12 @@ const CreatorPage = () => {
   const [showOutputDetails, setShowOutputDetails] = useState(false);
   const [createdEventsCount, setCreatedEventsCount] = useState(0);
   const [deletedEventsCount, setDeletedEventsCount] = useState(0);
-  const [googleCalendarId, setGoogleCalendarId] = useState('');
   const [customPrompt, setCustomPrompt] = useState(defaultPrompt);
   const [useCustomPrompt, setUseCustomPrompt] = useState(false);
   const { toast } = useToast();
  
 
 
-  useEffect(() => {
-    const geminiApiKey = process.env.VITE_GEMINI_API_KEY || localStorage.getItem('VITE_GEMINI_API_KEY');
-    const googleClientId = process.env.VITE_GOOGLE_CLIENT_ID || localStorage.getItem('VITE_GOOGLE_CLIENT_ID');
-    const googleApiKey = process.env.VITE_GOOGLE_API_KEY || localStorage.getItem('VITE_GOOGLE_API_KEY');
-    const calendarId = process.env.VITE_GOOGLE_CALENDAR_ID || localStorage.getItem('VITE_GOOGLE_CALENDAR_ID');
-    setGoogleCalendarId(calendarId);
-
-    if (!geminiApiKey || !googleClientId || !googleApiKey || !calendarId) {
-      toast({
-        title: "Configuration Required",
-        description: "Please set up your API keys in the Configuration section or in the system as env vars.",
-        variant: "destructive",
-      });
-    }
-  }, [toast]);
 
 
 
@@ -171,6 +155,13 @@ const CreatorPage = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleOpenGoogleCalendaar = () => {
+    const calendarId = localStorage.getItem('REACT_APP_GOOGLE_CALENDAR_ID');
+    console.log(calendarId);
+    window.open('https://calendar.google.com/calendar/embed?src=' + calendarId, '_blank');
+
+  };
+
   const handleSavePrompt = () => {
     saveTextFile("Input text: \n\n" + liveStreamText + '\n\n------------\n Prompt: \n\n' + 
       customPrompt, 'custom_prompt.txt');
@@ -203,7 +194,7 @@ const CreatorPage = () => {
           Prompt
         </Button>
         <Button
-            onClick={() => window.open(`https://calendar.google.com/calendar/embed?src=${googleCalendarId}`, '_blank')}
+               onClick={handleOpenGoogleCalendaar}
             variant="outline"
             size="sm">
             Google Calendar <ExternalLink className="ml-2 h-4 w-4" />
