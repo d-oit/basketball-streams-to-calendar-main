@@ -15,30 +15,25 @@ const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 const initClient = () => {
   return new Promise((resolve, reject) => {
-    gapi.load("client:auth2", async () => {
-      try {
-        await gapi.client.init({
-          apiKey: API_KEY(),
-          clientId: CLIENT_ID(),
-          discoveryDocs: [
-            "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
-          ],
-          scope: SCOPES,
-        });
+    gapi.load("client:auth2", () => {
+      gapi.client.init({
+        apiKey: API_KEY(),
+        clientId: CLIENT_ID(),
+        discoveryDocs: [
+          "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
+        ],
+        scope: SCOPES,
+      }).then(() => {
 
-        if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-          await gapi.auth2.getAuthInstance().signIn({ prompt: "consent" });
-        }
-
-        console.log("Signed in successfully");
-        resolve();
-      } catch (error) {
+        resolve(gapi);
+      }).catch(error => {
         console.error("Error initializing GAPI client:", error);
         reject(error);
-      }
+      });
     });
   });
 };
+
 
 const checkEventExists = async (event) => {
   const startDateTime = moment
@@ -78,6 +73,7 @@ const checkEventExists = async (event) => {
 };
 
 const deleteEventExists = async (event) => {
+  
   const startDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
     .utc()
@@ -87,10 +83,22 @@ const deleteEventExists = async (event) => {
     .utc()
     .format();
 
+    const filterStartDateTime = moment
+    .tz(event.startDateTime, "Europe/Berlin").add(-1, 'days')
+    .utc()
+    .format();
+  const filterEndDateTime = moment
+    .tz(event.endDateTime, "Europe/Berlin").add(1, 'days')
+    .utc()
+    .format();
+
+    console.log('deleteEventExists, check startdate: ' + startDateTime);
+    console.log('deleteEventExists, check endDateTime: ' + endDateTime);
+
   const response = await gapi.client.calendar.events.list({
     calendarId: CALENDAR_ID(),
-    timeMin: startDateTime,
-    timeMax: endDateTime,
+    timeMin: filterStartDateTime,
+    timeMax: filterEndDateTime,
     singleEvents: true,
     orderBy: "startTime",
   });
@@ -113,7 +121,8 @@ const deleteEventExists = async (event) => {
         existingStartDate === startDate &&
         existingEndDate === endDate;
 
-        console.log("deletedCount:" + deletedCount);
+        console.log("existingEvent:", existingEvent);
+        console.log("deleteEventExists - deletedCount:" + deletedCount);
       if (eventExists) {
         console.log("Event already exists:", event);
         console.log("Remove event Id:", existingEvent.id);
@@ -136,13 +145,25 @@ const deleteEventExists = async (event) => {
 };
 
 const createEvents = async (events) => {
+
+  // sign in to google account
+  if(!isSignedIn) {
+    signIn()
+  }
+
   let insertedCount = 0;
   let deletedCounter = 0;
 
   await Promise.all(
     events.map(async (event) => {
-      
+      console.log("event", event);  
+      if(event.startDateTime == undefined)  {
+        console.log("startDateTime == undefined");
+      }
+    
+      // delete existing events
       let delCount = await deleteEventExists(event);
+
       deletedCounter = deletedCounter + delCount;
       console.log("deletedCounter:" + deletedCounter);
       const eventBody = {
@@ -150,17 +171,11 @@ const createEvents = async (events) => {
         location: event.location,
         description: event.description,
         start: {
-          dateTime: moment
-            .tz(event.startDateTime, "Europe/Berlin")
-            .utc()
-            .format(),
+          dateTime: moment.tz(event.startDateTime, "Europe/Berlin").format(),
           timeZone: "Europe/Berlin",
         },
         end: {
-          dateTime: moment
-            .tz(event.endDateTime, "Europe/Berlin")
-            .utc()
-            .format(),
+          dateTime: moment.tz(event.endDateTime, "Europe/Berlin").format(),
           timeZone: "Europe/Berlin",
         },
       };
@@ -200,8 +215,9 @@ export const createCalendarEvent = async (events) => {
   }
 
   try {
-    return await initClient().then(() => createEvents(events));
-  } catch (error) {
+    return await initClient()
+     .then(() => createEvents(events))
+    } catch (error) {
     console.error("Error in createCalendarEvent:", error);
     if (error.result && error.result.error) {
       throw new Error(
@@ -211,4 +227,18 @@ export const createCalendarEvent = async (events) => {
       throw error;
     }
   }
+
+
+};
+
+export const signIn = () => {
+  return gapi.auth2.getAuthInstance().signIn();
+};
+
+export const signOut = () => {
+  return gapi.auth2.getAuthInstance().signOut();
+};
+
+export const isSignedIn = () => {
+  return gapi.auth2.getAuthInstance().isSignedIn.get();
 };

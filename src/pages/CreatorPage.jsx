@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { analyzeWithGemini } from '../utils/geminiApi';
+import { analyzeWithGemini, GeminiPrompt } from '../utils/geminiApi';
 import { createCalendarEvent } from '../utils/calendarApi';
 import { ExternalLink, HelpCircle, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -54,18 +54,8 @@ GIESSEN 46ers
 18:45
 ProA: BBC Bayreuth vs. HAKRO Merlins Crailsheim`;
 
-const defaultPrompt = `Analyze the following basketball live stream text and extract event details in JSON format as json array. Don't format the json with markdown, only plaintext:
-
-{text}
-
-Please provide the following information in JSON:
-- eventTitle: String
-- startDateTime: UTC
-- endDateTime: UTC (if not specified, add 1,5 hours)
-- location: String (if available)
-- description: String (summary of the event)
-
-Ensure that the response is a valid JSON object.`;
+const defaultPrompt = { GeminiPrompt };
+//console.log(defaultPrompt.GeminiPrompt);
 
 const CreatorPage = () => {
   const [liveStreamText, setLiveStreamText] = useState('');
@@ -75,12 +65,9 @@ const CreatorPage = () => {
   const [showOutputDetails, setShowOutputDetails] = useState(false);
   const [createdEventsCount, setCreatedEventsCount] = useState(0);
   const [deletedEventsCount, setDeletedEventsCount] = useState(0);
-  const [customPrompt, setCustomPrompt] = useState(defaultPrompt);
+  const [customPrompt, setCustomPrompt] = useState(defaultPrompt.GeminiPrompt);
   const [useCustomPrompt, setUseCustomPrompt] = useState(false);
   const { toast } = useToast();
- 
-
-
 
 
 
@@ -141,7 +128,7 @@ const CreatorPage = () => {
   };
 
   const handlePromptData = () => {
-    setCustomPrompt(defaultPrompt);
+    setCustomPrompt(defaultPrompt.GeminiPrompt);
     setUseCustomPrompt(true);
   };
 
