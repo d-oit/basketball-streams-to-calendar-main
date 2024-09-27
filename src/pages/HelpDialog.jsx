@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HelpCircle, AlertTriangle } from 'lucide-react';
+import { version } from '@/utils/version';
 
 const HelpDialog = () => {
   return (
@@ -20,6 +21,7 @@ const HelpDialog = () => {
           <div className="mt-4">
             <div className="text-center">
               <h2 className="font-semibold">Basketball live streams prompt google calendar creator</h2>
+              <p>App Version: {version}</p>
               <div className="max-w-3xl mx-auto">
                 <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">Create calendar events from basketball live stream data using AI-powered analysis.</p>
               </div>
@@ -34,11 +36,11 @@ const HelpDialog = () => {
 
             <h3 className="font-semibold mt-4">Configuration</h3>
             <p>Set up your API keys and Calendar ID in the Configuration section.</p>
-  <div class="flex items-center">
-    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
-      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
+  <div className="flex items-center">
+    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
     </svg>
-    <p class="font-bold">IMPORTANT</p>
+    <p className="font-bold">IMPORTANT</p>
   </div>
   <p>This is a crucial piece of information that users need to be aware of.</p>
 
@@ -69,7 +71,7 @@ const HelpDialog = () => {
 
             <section  className='py-6'>
               <h3 className="text-lg font-semibold">Saving Data</h3>
-              <p>In the "Output Details" section, you can save the custom prompt and calendar results as text files using the dedicated save buttons.</p>
+              <p>In the 'Output Details' section, you can save the custom prompt and calendar results as text files using the dedicated save buttons.</p>
             </section>
 
             <section className='py-6'>

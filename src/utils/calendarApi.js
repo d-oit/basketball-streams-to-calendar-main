@@ -146,9 +146,7 @@ const deleteEventExists = async (event) => {
 const createEvents = async (events) => {
 
   // sign in to google account
-  if(!isSignedIn) {
-    signIn()
-  }
+  gapi.auth2.getAuthInstance().signIn();
 
   let insertedCount = 0;
   let deletedCounter = 0;
