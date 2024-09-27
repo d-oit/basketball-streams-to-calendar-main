@@ -15,7 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@google/generative-ai": "^0.17.1",
+    "@google/generative-ai": "^0.20.0",
     "@hookform/resolvers": "^3.6.0",
     "@mui/material": "^6.0.2",
     "@radix-ui/react-accordion": "^1.2.0",
