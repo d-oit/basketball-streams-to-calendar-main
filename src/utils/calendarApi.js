@@ -11,13 +11,13 @@ const API_KEY = () =>
   process.env.REACT_APP_GOOGLE_API_KEY ||
   localStorage.getItem("REACT_APP_GOOGLE_API_KEY");
 
-const SCOPES = "https://www.googleapis.com/auth/calendar";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 const initClient = () => {
   return new Promise((resolve, reject) => {
     gapi.load("client:auth2", () => {
       gapi.client.init({
-        apiKey: API_KEY(),
+        //apiKey: API_KEY(),
         clientId: CLIENT_ID(),
         discoveryDocs: [
           "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
@@ -145,8 +145,6 @@ const deleteEventExists = async (event) => {
 
 const createEvents = async (events) => {
 
-  // sign in to google account
-  gapi.auth2.getAuthInstance().signIn();
 
   let insertedCount = 0;
   let deletedCounter = 0;

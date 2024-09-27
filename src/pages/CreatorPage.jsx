@@ -80,6 +80,10 @@ const CreatorPage = () => {
   };
 
   const handleAnalyze = async () => {
+    if(liveStreamText.length < 1) {
+      addMessage("Input a live stream text!");
+      return;
+    }
     setIsLoading(true);
     setMessages([]);
     setDetailMessages([]);
