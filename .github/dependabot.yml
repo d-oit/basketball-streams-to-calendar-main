@@ -8,8 +8,15 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "chore(deps)"
+    automerge: true
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
     versioning-strategy: increase
+  
+    
