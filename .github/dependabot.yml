@@ -11,11 +11,11 @@ updates:
       - "dependencies"
     commit-message:
       prefix: "chore(deps)"
-    open-pull-requests-limit: 10   
+    open-pull-requests-limit: 10
+    automerge: true
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
     versioning-strategy: increase
-  
-    
+    automerge: true
