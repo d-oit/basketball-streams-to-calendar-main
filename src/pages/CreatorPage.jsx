@@ -70,7 +70,6 @@ const CreatorPage = () => {
   const { toast } = useToast();
 
 
-
   const addMessage = (message) => {
     setMessages(prevMessages => [...prevMessages, message]);
     setDetailMessages(prevMessages => [...prevMessages, message]);

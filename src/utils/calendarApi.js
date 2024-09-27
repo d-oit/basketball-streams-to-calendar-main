@@ -11,7 +11,7 @@ const API_KEY = () =>
   process.env.REACT_APP_GOOGLE_API_KEY ||
   localStorage.getItem("REACT_APP_GOOGLE_API_KEY");
 
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+const SCOPES = "https://www.googleapis.com/auth/calendar";
 
 const initClient = () => {
   return new Promise((resolve, reject) => {
@@ -24,7 +24,6 @@ const initClient = () => {
         ],
         scope: SCOPES,
       }).then(() => {
-
         resolve(gapi);
       }).catch(error => {
         console.error("Error initializing GAPI client:", error);
