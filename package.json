@@ -57,7 +57,7 @@
     "gapi-script": "^1.2.0",
     "html-to-image": "^1.11.11",
     "input-otp": "^1.2.4",
-    "lucide-react": "^0.417.0",
+    "lucide-react": "^0.446.0",
     "moment-timezone": "^0.5.45",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
