@@ -8,6 +8,7 @@ import { Moon, Sun, Laptop } from "lucide-react";
 import { useTheme } from "next-themes";
 import HelpDialog from './HelpDialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { version } from '@/utils/version';
 
 const Copyright = () => (
   <div className="text-sm text-gray-600 dark:text-gray-400 mr-4">
@@ -104,7 +105,7 @@ const Index = () => {
       <footer className="bg-gray-100 dark:bg-gray-800">
         <div className="max-w-6xl mx-auto px-5 sm:px-6">
           <div className="md:flex md:items-center md:justify-between py-4 md:py-8 border-t border-gray-200 dark:border-gray-700">
-            <Copyright />
+            <Copyright /> | Version: {version}
           </div>
         </div>
       </footer>
