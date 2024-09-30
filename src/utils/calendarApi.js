@@ -226,28 +226,6 @@ export const createCalendarEvent = async (events) => {
   }
 };
 
-// export const GoogleInitClient = async () => {
-//   if (!API_KEY()) {
-//     throw new Error("Google calendar API key is not set");
-//   }
-
-//   if (!CLIENT_ID()) {
-//     throw new Error("Google calendar client id is not set");
-//   }
-
-//   if (!CALENDAR_ID()) {
-//     throw new Error("Google calendar calendar id is not set");
-//   }
-
-//   return await initClient()
-//     .then(() => console.log("Google Calendar API client initialized"))
-//     .catch((error) => {
-//       console.error("Error initializing GAPI client:", error);
-//       throw error;
-//     });
-  
-// };
-
 export const GooglesignIn = () => {
   window.gapi.auth2.getAuthInstance().signIn();
 };
