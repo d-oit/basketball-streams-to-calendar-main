@@ -18,7 +18,7 @@ const initClient = () => {
     window.gapi.load("client:auth2", () => {
       window.gapi.client
         .init({
-          apiKey: API_KEY(),
+          //apiKey: API_KEY(),
           clientId: CLIENT_ID(),
           discoveryDocs: [
             "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
@@ -212,18 +212,8 @@ export const createCalendarEvent = async (events) => {
     throw new Error("Google calendar calendar id is not set");
   }
 
-  try {
-    return await initClient().then(() => createEvents(events));
-  } catch (error) {
-    console.error("Error in createCalendarEvent:", error);
-    if (error.result && error.result.error) {
-      throw new Error(
-        `Google Calendar API error: ${error.result.error.message}`
-      );
-    } else {
-      throw error;
-    }
-  }
+   return await initClient().then(() => createEvents(events));
+  
 };
 
 export const GooglesignIn = () => {
