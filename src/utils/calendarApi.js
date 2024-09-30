@@ -76,22 +76,18 @@ const checkEventExists = async (event) => {
 const deleteEventExists = async (event) => {
   const startDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
-    .utc()
     .format();
   const endDateTime = moment
     .tz(event.endDateTime, "Europe/Berlin")
-    .utc()
     .format();
 
   const filterStartDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
     .add(-1, "days")
-    .utc()
     .format();
   const filterEndDateTime = moment
     .tz(event.endDateTime, "Europe/Berlin")
     .add(1, "days")
-    .utc()
     .format();
 
   console.log("deleteEventExists, check startdate: " + startDateTime);
