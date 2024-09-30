@@ -5,59 +5,25 @@ import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { analyzeWithGemini, GeminiPrompt } from '../utils/geminiApi';
-import {  CalendarApiComponent  } from '@/utils/calendarApi';
+import { createCalendarEvent, GooglesignIn, GooglesignOut, GoogleisSignedIn } from '../utils/calendarApi';
 import { ExternalLink, HelpCircle, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import HelpDialog from './HelpDialog';
+import sampleData from '@/utils/sampleData';
 
-const sampleData = `20.09.24
-19:15
-ProA: VET-CONCEPT Gladiators Trier vs. Tigers Tübingen
-VET-CONCEPT Gladiators Trier
-VET-CONCEPT Gladiators Trier
-
-Basketball
-VET-CONCEPT Gladiators Trier
-vs.
-Tigers Tübingen
-20.09.24
-19:45
-ProA: EPG GUARDIANS Koblenz vs. VfL SparkassenStars Bochum
-EPG Guardians Koblenz
-EPG Guardians Koblenz
-
-Basketball
-EPG Guardians Koblenz
-vs.
-VfL SparkassenStars Bochum
-21.09.24
-18:30
-ProA: Phoenix Hagen vs. Science City Jena
-Phoenix Hagen
-Phoenix Hagen
-
-Basketball
-Phoenix Hagen
-vs.
-Science City Jena
-21.09.24
-18:45
-ProA: Bozic Estriche Knights Kirchheim vs. GIESSEN 46ers
-Bozic Estriche Knights Kirchheim
-Bozic Estriche Knights Kirchheim
-
-Basketball
-Bozic Estriche Knights Kirchheim
-vs.
-GIESSEN 46ers
-21.09.24
-18:45
-ProA: BBC Bayreuth vs. HAKRO Merlins Crailsheim`;
 
 const defaultPrompt = { GeminiPrompt };
 //console.log(defaultPrompt.GeminiPrompt);
 
 const CreatorPage = () => {
+  useEffect(() => {
+    const checkSignInStatus = async () => {
+        const signedIn = await GoogleisSignedIn();
+        setIsSignedIn(signedIn);
+    };
+    checkSignInStatus();
+}, []);
+
   const [liveStreamText, setLiveStreamText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -68,7 +34,18 @@ const CreatorPage = () => {
   const [customPrompt, setCustomPrompt] = useState(defaultPrompt.GeminiPrompt);
   const [useCustomPrompt, setUseCustomPrompt] = useState(false);
   const { toast } = useToast();
-  const { createCalendarEvent, isSignedIn, signOut } = CalendarApiComponent();
+
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const handleSignIn = async () => {
+    await GooglesignIn();
+    setIsSignedIn(true);
+};
+
+const handleSignOut = async () => {
+    await GooglesignOut();
+    setIsSignedIn(false);
+};
+
 
   const addMessage = (message) => {
     setMessages(prevMessages => [...prevMessages, message]);
@@ -80,7 +57,7 @@ const CreatorPage = () => {
   };
 
   const handleAnalyze = async () => {
-    if(liveStreamText.length < 1) {
+    if (liveStreamText.length < 1) {
       addMessage("Input a live stream text!");
       return;
     }
@@ -153,7 +130,7 @@ const CreatorPage = () => {
   };
 
   const handleSavePrompt = () => {
-    saveTextFile("Input text: \n\n" + liveStreamText + '\n\n------------\n Prompt: \n\n' + 
+    saveTextFile("Input text: \n\n" + liveStreamText + '\n\n------------\n Prompt: \n\n' +
       customPrompt, 'custom_prompt.txt');
   };
 
@@ -184,10 +161,10 @@ const CreatorPage = () => {
           Prompt
         </Button>
         <Button
-               onClick={handleOpenGoogleCalendaar}
-            variant="outline"
-            size="sm">
-            Google Calendar <ExternalLink className="ml-2 h-4 w-4" />
+          onClick={handleOpenGoogleCalendaar}
+          variant="outline"
+          size="sm">
+          Google Calendar <ExternalLink className="ml-2 h-4 w-4" />
         </Button>
       </div>
       {useCustomPrompt && (
@@ -200,30 +177,46 @@ const CreatorPage = () => {
         />
       )}
       <div className="flex flex-wrap items-center space-x-2 space-y-2 sm:space-y-0">
+
+        {!isSignedIn ? (
         <Button
-          onClick={handleAnalyze}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Analyzing...' : 'Analyze and Create Event'}
-          {isSignedIn() && <button onClick={signOut}>Sign Out</button>}
-        </Button>
-        <HelpDialog />
+        onClick={handleSignIn}
+      
+      >
+        Login to google account
+      </Button>
+        ) : (
+          <>
+            <Button
+              onClick={handleAnalyze}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Analyzing...' : 'Analyze and Create Event'}
+            </Button>
+            <HelpDialog />
+            <Button
+              onClick={handleSignOut}
+              
+            >
+            Google Sign Out</Button>
+          </>
+        )}
       </div>
       <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-800 rounded">
-          <h3 className="font-bold mb-2">Info:</h3>
-          <pre className="whitespace-pre-wrap text-xs">Existing calendar entires with the same title on the same data are deleted before created the new entry.
-          </pre>         
+        <h3 className="font-bold mb-2">Info:</h3>
+        <pre className="whitespace-pre-wrap text-xs">Existing calendar entires with the same title on the same data are deleted before created the new entry.
+        </pre>
       </div>
       <div className={`mt-4 p-4 rounded ${messages.length > 0 ? (createdEventsCount > 0 ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900') : ''}`}>
         {messages.map((message, index) => (
           <p key={index} className="text-sm text-gray-600 dark:text-gray-300">{message}</p>
         ))}
-         {deletedEventsCount > 0 && (
+        {deletedEventsCount > 0 && (
           <p className="text-sm text-red-600 dark:text-red-400 mt-2">
             Total events delete: {deletedEventsCount}
           </p>
         )}
-         {createdEventsCount > 0 && (
+        {createdEventsCount > 0 && (
           <p className="text-sm font-bold text-green-600 dark:text-green-400 mt-2">
             Total events created: {createdEventsCount}
           </p>

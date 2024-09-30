@@ -36,13 +36,13 @@ const HelpDialog = () => {
 
             <h3 className="font-semibold mt-4">Configuration</h3>
             <p>Set up your API keys and Calendar ID in the Configuration section.</p>
-  <div className="flex items-center">
-    <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
-    </svg>
-    <p className="font-bold">IMPORTANT</p>
-  </div>
-  <p>This is a crucial piece of information that users need to be aware of.</p>
+            <div className="flex items-center">
+              <svg className="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 002 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"></path>
+              </svg>
+              <p className="font-bold">IMPORTANT</p>
+            </div>
+            <p>This is a crucial piece of information that users need to be aware of.</p>
 
             <h3 className="font-semibold mt-4">Import / Export configuration</h3>
             <p>You can export your current configuration as a JSON file using the 'Export' button. To import a previously saved configuration, use the 'Import' button and select the JSON file. The page will refresh after a successful import.</p>
@@ -50,7 +50,7 @@ const HelpDialog = () => {
             <h3 className="font-semibold mt-4">Google Calendar</h3>
             <p>Click this button to open your Google Calendar in a new tab. Only available after configuration.</p>
 
-            <section  className='py-6'>
+            <section className='py-6'>
               <h3 className="text-lg font-semibold">Current Functions</h3>
               <ul className="list-disc pl-5 space-y-2">
                 <li>Analyze basketball live stream text using AI</li>
@@ -69,7 +69,7 @@ const HelpDialog = () => {
               <p>This app is a Progressive Web App (PWA), which means you can install it on your device for offline use and a native app-like experience.</p>
             </section>
 
-            <section  className='py-6'>
+            <section className='py-6'>
               <h3 className="text-lg font-semibold">Saving Data</h3>
               <p>In the 'Output Details' section, you can save the custom prompt and calendar results as text files using the dedicated save buttons.</p>
             </section>
@@ -82,19 +82,19 @@ const HelpDialog = () => {
               </p>
             </section>
           </div>
-        <footer className="bg-gray-100 dark:bg-gray-800 mt-6 py-6">
-  <div className="max-w-6xl mx-auto px-2 sm:px-6">
-    <div className="md:flex md:items-center md:justify-between">
-      <small>
-        <p className="flex items-center">
-          <img src="https://avatars.githubusercontent.com/u/6849456" alt="app logo" className="w-8 h-8 inline rounded mr-2" />
-          
-          <a href="https://github.com/d-oit" target="_blank" className="underline hover:text-gray-800 dark:hover:text-gray-200 ml-2">Drop a line</a>
-        </p>
-      </small>
-    </div>
-  </div>
-</footer>
+          <footer className="bg-gray-100 dark:bg-gray-800 mt-6 py-6">
+            <div className="max-w-6xl mx-auto px-2 sm:px-6">
+              <div className="md:flex md:items-center md:justify-between">
+                <small>
+                  <p className="flex items-center">
+                    <img src="https://avatars.githubusercontent.com/u/6849456" alt="app logo" className="w-8 h-8 inline rounded mr-2" />
+
+                    <a href="https://github.com/d-oit" target="_blank" className="underline hover:text-gray-800 dark:hover:text-gray-200 ml-2">Drop a line</a>
+                  </p>
+                </small>
+              </div>
+            </div>
+          </footer>
         </ScrollArea>
       </DialogContent>
     </Dialog>

@@ -30,5 +30,8 @@ export default defineConfig(({ mode }) => {
       'process.env.REACT_APP_GOOGLE_API_KEY': JSON.stringify(env.REACT_APP_GOOGLE_API_KEY),
       'process.env.REACT_APP_GOOGLE_CALENDAR_ID': JSON.stringify(env.REACT_APP_GOOGLE_CALENDAR_ID),
     },
+    build: {
+      chunkSizeWarningLimit: 1000, // Adjust this value as needed
+    },
   };
 });
