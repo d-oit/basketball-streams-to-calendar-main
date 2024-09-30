@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { analyzeWithGemini, GeminiPrompt } from '../utils/geminiApi';
-import { createCalendarEvent } from '../utils/calendarApi';
+import {  CalendarApiComponent  } from '@/utils/calendarApi';
 import { ExternalLink, HelpCircle, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import HelpDialog from './HelpDialog';
@@ -68,7 +68,7 @@ const CreatorPage = () => {
   const [customPrompt, setCustomPrompt] = useState(defaultPrompt.GeminiPrompt);
   const [useCustomPrompt, setUseCustomPrompt] = useState(false);
   const { toast } = useToast();
-
+  const { createCalendarEvent, isSignedIn, signOut } = CalendarApiComponent();
 
   const addMessage = (message) => {
     setMessages(prevMessages => [...prevMessages, message]);
@@ -205,6 +205,7 @@ const CreatorPage = () => {
           disabled={isLoading}
         >
           {isLoading ? 'Analyzing...' : 'Analyze and Create Event'}
+          {isSignedIn() && <button onClick={signOut}>Sign Out</button>}
         </Button>
         <HelpDialog />
       </div>

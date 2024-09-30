@@ -9,6 +9,7 @@ export const GeminiPrompt = 'Analyze the following basketball live stream text a
   'Use the year ' + currentYear + ' is no year is included in a date.\n' +
   'Ignore dates which the word Eishockey, Fussball, Volleyball included in a date description.\n' +
   'Do not create the same event title on the same date. Always use "vs" if you need to insert a separating word.\n' +
+  'Use english as english \n' +
   "Don't format the json with markdown, only plaintext:\n\n" +
   '{text}\n\n' +
   'Please provide the following information in JSON:\n' +
