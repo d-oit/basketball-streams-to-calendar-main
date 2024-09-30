@@ -26,6 +26,8 @@ const initClient = () => {
           scope: SCOPES,
         })
         .then(() => {
+          console.log(' window.gapi.client is successful');
+          
           resolve(gapi);
         })
         .catch((error) => {
@@ -46,7 +48,7 @@ const checkEventExists = async (event) => {
     .utc()
     .format();
 
-  const response = await gapi.client.calendar.events.list({
+  const response = await window.gapi.client.calendar.events.list({
     calendarId: CALENDAR_ID(),
     timeMin: startDateTime,
     timeMax: endDateTime,
@@ -93,7 +95,7 @@ const deleteEventExists = async (event) => {
   console.log("deleteEventExists, check startdate: " + startDateTime);
   console.log("deleteEventExists, check endDateTime: " + endDateTime);
 
-  const response = await gapi.client.calendar.events.list({
+  const response = await window.gapi.client.calendar.events.list({
     calendarId: CALENDAR_ID(),
     timeMin: filterStartDateTime,
     timeMax: filterEndDateTime,
@@ -124,7 +126,7 @@ const deleteEventExists = async (event) => {
       if (eventExists) {
         console.log("Event already exists:", event);
         console.log("Remove event Id:", existingEvent.id);
-        await gapi.client.calendar.events
+        await window.gapi.client.calendar.events
           .delete({
             calendarId: CALENDAR_ID(),
             eventId: existingEvent.id,
@@ -143,8 +145,6 @@ const deleteEventExists = async (event) => {
 };
 
 const createEvents = async (events) => {
-  // TODO check if sign in!
-  console.log(  gapi.auth2.getAuthInstance().isSignedIn.get());
 
   let insertedCount = 0;
   let deletedCounter = 0;
@@ -175,7 +175,7 @@ const createEvents = async (events) => {
         },
       };
 
-      await gapi.client.calendar.events
+      await window.gapi.client.calendar.events
         .insert({
           calendarId: CALENDAR_ID(),
           resource: eventBody,
@@ -224,5 +224,5 @@ export const GoogleisSignedIn = async () => {
   await initClient();
   console.log('signIn status: ');
   console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-  gapi.auth2.getAuthInstance().isSignedIn.get();
+  window.gapi.auth2.getAuthInstance().isSignedIn.get();
 };
