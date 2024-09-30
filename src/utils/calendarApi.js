@@ -18,7 +18,7 @@ const initClient = () => {
     window.gapi.load("client:auth2", () => {
       window.gapi.client
         .init({
-          //apiKey: API_KEY(),
+      
           clientId: CLIENT_ID(),
           discoveryDocs: [
             "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
