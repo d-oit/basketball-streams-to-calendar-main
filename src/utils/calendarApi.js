@@ -181,6 +181,7 @@ export const CalendarApiComponent = () => {
     }
   };
 
+  
   const signOut = () => {
     setAccessToken(null);
   };
@@ -193,6 +194,7 @@ export const CalendarApiComponent = () => {
     createCalendarEvent, 
     signOut,
     isSignedIn,
+    login
   };
 };
 
