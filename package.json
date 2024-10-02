@@ -91,7 +91,7 @@
     "react-test-renderer": "^18.3.1",
     "release-it": "^17.6.0",
     "tailwindcss": "^3.4.4",
-    "vite": "^5.1.4"
+    "vite": "^5.4.8"
   },
   "resolutions": {
     "glob": "^9.0.0"
