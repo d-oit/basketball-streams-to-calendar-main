@@ -16,7 +16,7 @@ export const GeminiPrompt = 'Analyze the following basketball live stream text a
   '- startDateTime: use the extract date time \n' +
   '- endDateTime: use the extract date time (if not specified, add 1,5 hours)\n' +
   '- location: String (use a found url as location if empty)\n' +
-  '- league: get the league from the basketball matches from the match date. Add the league also in the end line of the description with league: name of league + \n' +
+  '- league: get the league from the basketball matches from the match date. Add the league also in the end line of the description with league: name of league\n' +
   '- description: String (summary of the event) - add a description by yourself if is empty\n\n' +
   'Ensure that the response is a valid JSON object.';
 
