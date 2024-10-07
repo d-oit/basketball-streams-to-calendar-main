@@ -26,8 +26,8 @@ const initClient = () => {
           scope: SCOPES,
         })
         .then(() => {
-          console.log(' window.gapi.client is successful');
-          
+          console.log(" window.gapi.client is successful");
+
           resolve(gapi);
         })
         .catch((error) => {
@@ -79,9 +79,7 @@ const deleteEventExists = async (event) => {
   const startDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
     .format();
-  const endDateTime = moment
-    .tz(event.endDateTime, "Europe/Berlin")
-    .format();
+  const endDateTime = moment.tz(event.endDateTime, "Europe/Berlin").format();
 
   const filterStartDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
@@ -144,8 +142,19 @@ const deleteEventExists = async (event) => {
   return deletedCount;
 };
 
-const createEvents = async (events) => {
+const refreshToken = async () => {
+  const authInstance = gapi.auth2.getAuthInstance();
+  const user = authInstance.currentUser.get();
+  const authResponse = user.getAuthResponse(true);
 
+  if (authResponse.expires_in < 60) {
+    const newAuthResponse = await user.reloadAuthResponse();
+    console.log("New Auth Response:", newAuthResponse);
+    localStorage.setItem("access_token", newAuthResponse.access_token);
+  }
+};
+
+const createEvents = async (events) => {
   let insertedCount = 0;
   let deletedCounter = 0;
 
@@ -196,6 +205,30 @@ const createEvents = async (events) => {
 };
 
 export const createCalendarEvent = async (events) => {
+  CheckApiValues();
+
+  return await initClient().then(() => createEvents(events));
+};
+
+export const GooglesignIn = () => {
+  CheckApiValues();
+  window.gapi.auth2.getAuthInstance().signIn();
+};
+
+export const GooglesignOut = () => {
+  gapi.auth2.getAuthInstance().signOut();
+};
+
+export const GoogleisSignedIn = async () => {
+  CheckApiValues();
+  await initClient();
+  await refreshToken();
+  console.log("google is signed in:");
+  console.log(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+  return window.gapi.auth2.getAuthInstance().isSignedIn.get();
+};
+
+function CheckApiValues() {
   if (!API_KEY()) {
     throw new Error("Google calendar API key is not set");
   }
@@ -207,22 +240,4 @@ export const createCalendarEvent = async (events) => {
   if (!CALENDAR_ID()) {
     throw new Error("Google calendar calendar id is not set");
   }
-
-   return await initClient().then(() => createEvents(events));
-  
-};
-
-export const GooglesignIn = () => {
-  window.gapi.auth2.getAuthInstance().signIn();
-};
-
-export const GooglesignOut = () => {
-  gapi.auth2.getAuthInstance().signOut();
-};
-
-export const GoogleisSignedIn = async () => {
-  await initClient();
-  console.log('signIn status: ');
-  console.log(gapi.auth2.getAuthInstance().isSignedIn.get());
-  window.gapi.auth2.getAuthInstance().isSignedIn.get();
-};
+}

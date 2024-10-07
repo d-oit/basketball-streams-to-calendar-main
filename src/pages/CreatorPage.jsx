@@ -4,7 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { analyzeWithGemini, GeminiPrompt } from '../utils/geminiApi';
+import { analyzeWithGemini } from '../utils/geminiApi';
+import { GeminiPrompt } from "@/utils/GeminiPrompt";
 import { createCalendarEvent, GooglesignIn, GooglesignOut, GoogleisSignedIn } from '../utils/calendarApi';
 import { ExternalLink, HelpCircle, Save } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -177,11 +178,9 @@ const handleSignOut = async () => {
         />
       )}
       <div className="flex flex-wrap items-center space-x-2 space-y-2 sm:space-y-0">
-
         {!isSignedIn ? (
         <Button
-        onClick={handleSignIn}
-      
+        onClick={handleSignIn}      
       >
         Login to google account
       </Button>
