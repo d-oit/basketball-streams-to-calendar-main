@@ -84,10 +84,10 @@ const handleSignOut = async () => {
         });
       } catch (error) {
         console.error('Google Calendar API Error:', error);
-        addMessage(`Error creating calendar events: ${error.message}`);
+        addMessage(`Error creating calendar events: ${error.body}`);
         toast({
           title: "Calendar Error",
-          description: `Failed to create events: ${error.message}`,
+          description: `Failed to create events: ${error}`,
           variant: "destructive",
         });
       }

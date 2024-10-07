@@ -13,6 +13,8 @@ const API_KEY = () =>
 
 const SCOPES = "https://www.googleapis.com/auth/calendar";
 
+var errorMessage = "";
+
 const initClient = () => {
   return new Promise((resolve, reject) => {
     window.gapi.load("client:auth2", () => {
@@ -32,6 +34,7 @@ const initClient = () => {
         })
         .catch((error) => {
           console.error("Error initializing GAPI client:", error);
+          errorMessage = error.message;
           reject(error);
         });
     });
@@ -53,6 +56,7 @@ const checkEventExists = async (event) => {
     timeMin: startDateTime,
     timeMax: endDateTime,
     singleEvents: true,
+    showDeleted: false,
     orderBy: "startTime",
   });
 
@@ -74,6 +78,10 @@ const checkEventExists = async (event) => {
     );
   });
 };
+
+function normalizeTitle(title) {
+  return title.replace(/\bvs\.?\b/gi, 'vs').toLowerCase();
+}
 
 const deleteEventExists = async (event) => {
   const startDateTime = moment
@@ -103,6 +111,7 @@ const deleteEventExists = async (event) => {
 
   const events = response.result.items;
   let deletedCount = 0;
+  let i = 0;
   await Promise.all(
     events.map(async (existingEvent) => {
       const existingStartDate = new Date(
@@ -115,15 +124,23 @@ const deleteEventExists = async (event) => {
       const endDate = new Date(endDateTime).toDateString();
 
       const eventExists =
-        existingEvent.summary === event.eventTitle &&
+      normalizeTitle(existingEvent.summary) === normalizeTitle(event.eventTitle) &&
         existingStartDate === startDate &&
         existingEndDate === endDate;
+      
+      i++;
+      if ((i) % 3 === 0) {
+        setTimeout(function() { console.log("waiting for 1 second - i"); }, 1000);
+        refreshToken();
+        i = 0;
+      }
 
       console.log("existingEvent:", existingEvent);
       console.log("deleteEventExists - deletedCount:" + deletedCount);
       if (eventExists) {
         console.log("Event already exists:", event);
         console.log("Remove event Id:", existingEvent.id);
+       
         await window.gapi.client.calendar.events
           .delete({
             calendarId: CALENDAR_ID(),
@@ -134,7 +151,32 @@ const deleteEventExists = async (event) => {
             deletedCount++;
           })
           .catch((error) => {
+            if (error && error.result.error.message !== null) {
+              if (error.result.error.message === "Rate Limit Exceeded") {
+                // Handle rate limit exceeded error
+                console.log("Rate limit exceeded error, retry:", error);
+                setTimeout(function() {
+                  console.log('This message is delayed by 2 seconds');
+                }, 2000); // 2000 milliseconds = 2 seconds
+                refreshToken();
+                window.gapi.client.calendar.events
+                  .delete({
+                    calendarId: CALENDAR_ID(),
+                    eventId: existingEvent.id,
+                  })
+                  .then((response) => {
+                    console.log("Event deleted:", response);
+                    deletedCount++;
+                  })
+                  .catch((error) => {
+                    console.error("Error 2x time deleting event:", error);
+                    errorMessage = error.result.error.message;  
+                  });
+              } 
+            } 
             console.error("Error deleting event:", error);
+            errorMessage = error.result.error.message;
+            throw error;
           });
       }
     })
@@ -157,6 +199,8 @@ const refreshToken = async () => {
 const createEvents = async (events) => {
   let insertedCount = 0;
   let deletedCounter = 0;
+  errorMessage = "";
+  let i = 0;
 
   await Promise.all(
     events.map(async (event) => {
@@ -182,7 +226,17 @@ const createEvents = async (events) => {
           dateTime: moment.tz(event.endDateTime, "Europe/Berlin").format(),
           timeZone: "Europe/Berlin",
         },
+        guestsCanInviteOthers: false,
+        guestsCanSeeOtherGuests: false
       };
+
+      i++;
+      if ((i) % 3 === 0) {
+        setTimeout(function() { console.log("waiting for 1 second - insert"); }, 1000);
+        refreshToken();
+        i = 0;
+      }
+    
 
       await window.gapi.client.calendar.events
         .insert({
@@ -196,12 +250,13 @@ const createEvents = async (events) => {
         })
         .catch((error) => {
           console.error("Error creating event: ", error);
+          errorMessage = errorMessage + "Error creating event: " + eventBody.summary + "\n";
           throw error;
         });
     })
   );
 
-  return { deleted: deletedCounter, inserted: insertedCount };
+  return { deleted: deletedCounter, inserted: insertedCount, errorMessage: errorMessage };
 };
 
 export const createCalendarEvent = async (events) => {
