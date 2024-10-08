@@ -41,6 +41,31 @@ const initClient = () => {
   });
 };
 
+let cachedEvents = null;
+let filterExistingCalStartDateTime = null;
+let filterExistingCalEndDateTime = null;
+
+async function getExistingEvents() {
+  if (filterExistingCalStartDateTime === null) {
+    console.log("getExistingEvents no filterExistingCalStartDateTime");
+    return null;
+
+    //throw new Error("filterExistingCalStartDateTime is null!");
+  }
+
+  if (!cachedEvents) {
+    const response = await window.gapi.client.calendar.events.list({
+      calendarId: CALENDAR_ID(),
+      timeMin: filterExistingCalStartDateTime,
+      timeMax: filterExistingCalEndDateTime,
+      singleEvents: true,
+      orderBy: "startTime",
+    });
+    cachedEvents = response.result.items;
+  }
+  return cachedEvents;
+}
+
 const checkEventExists = async (event) => {
   const startDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
@@ -84,33 +109,21 @@ function normalizeTitle(title) {
 }
 
 const deleteEventExists = async (event) => {
+  const events = await getExistingEvents();
+  let deletedCount = 0;
+  if (events == null) {
+    console.log("No existing events to delete.");
+    return deletedCount;
+  }
+   
   const startDateTime = moment
     .tz(event.startDateTime, "Europe/Berlin")
     .format();
   const endDateTime = moment.tz(event.endDateTime, "Europe/Berlin").format();
 
-  const filterStartDateTime = moment
-    .tz(event.startDateTime, "Europe/Berlin")
-    .add(-1, "days")
-    .format();
-  const filterEndDateTime = moment
-    .tz(event.endDateTime, "Europe/Berlin")
-    .add(1, "days")
-    .format();
-
   console.log("deleteEventExists, check startdate: " + startDateTime);
   console.log("deleteEventExists, check endDateTime: " + endDateTime);
-
-  const response = await window.gapi.client.calendar.events.list({
-    calendarId: CALENDAR_ID(),
-    timeMin: filterStartDateTime,
-    timeMax: filterEndDateTime,
-    singleEvents: true,
-    orderBy: "startTime",
-  });
-
-  const events = response.result.items;
-  let deletedCount = 0;
+ 
   let i = 0;
   await Promise.all(
     events.map(async (existingEvent) => {
@@ -125,18 +138,15 @@ const deleteEventExists = async (event) => {
 
       const eventExists =
       normalizeTitle(existingEvent.summary) === normalizeTitle(event.eventTitle) &&
-        existingStartDate === startDate &&
-        existingEndDate === endDate;
+        existingStartDate === startDate;
       
       i++;
-      if ((i) % 3 === 0) {
-        setTimeout(function() { console.log("waiting for 1 second - i"); }, 1000);
+      if ((i) % 10 === 0) {
+        setTimeout(function() { console.log("waiting for 1 second - del"); }, 1000);
         refreshToken();
         i = 0;
       }
-
       console.log("existingEvent:", existingEvent);
-      console.log("deleteEventExists - deletedCount:" + deletedCount);
       if (eventExists) {
         console.log("Event already exists:", event);
         console.log("Remove event Id:", existingEvent.id);
@@ -196,11 +206,48 @@ const refreshToken = async () => {
   }
 };
 
+function getFirstAndLastEventTimesFromJson(eventsJson) {
+  const events = eventsJson;
+  if (events.length === 0) {
+    return { firstStartDateTime: null, lastEndDateTime: null };
+  }
+
+  let firstStartDateTime = events[0].startDateTime;
+  let lastEndDateTime = events[0].endDateTime;
+
+  events.forEach(event => {
+    const startDateTime = event.startDateTime;
+    const endDateTime = event.endDateTime;
+
+    if (new Date(startDateTime) < new Date(firstStartDateTime)) {
+      firstStartDateTime = startDateTime;
+    }
+    if (new Date(endDateTime) > new Date(lastEndDateTime)) {
+      lastEndDateTime = endDateTime;
+    }
+  });
+
+  return { firstStartDateTime, lastEndDateTime };
+}
+
 const createEvents = async (events) => {
   let insertedCount = 0;
   let deletedCounter = 0;
   errorMessage = "";
   let i = 0;
+
+  const { firstStartDateTime, lastEndDateTime } = getFirstAndLastEventTimesFromJson(events);
+  console.log(`First event starts at: ${firstStartDateTime}`);
+  console.log(`Last event ends at: ${lastEndDateTime}`);
+
+  filterExistingCalStartDateTime = moment
+    .tz(firstStartDateTime, "Europe/Berlin")
+    .add(-1, "days")
+    .format();
+    filterExistingCalEndDateTime = moment
+    .tz(lastEndDateTime, "Europe/Berlin")
+    .add(1, "days")
+    .format();
 
   await Promise.all(
     events.map(async (event) => {
